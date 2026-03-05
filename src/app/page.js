@@ -1,65 +1,98 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0, hours: 0, minutes: 0, seconds: 0
+    });
+
+    useEffect(() => {
+        // Target Date: March 27, 2028
+        const targetDate = new Date("March 27, 2028 00:00:00").getTime();
+        
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            if (distance > 0) {
+                setTimeLeft({
+                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((distance % (1000 * 60)) / 1000),
+                });
+            }
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const timeUnits = [
+        { label: 'Days', value: timeLeft.days },
+        { label: 'Hours', value: timeLeft.hours },
+        { label: 'Minutes', value: timeLeft.minutes },
+        { label: 'Seconds', value: timeLeft.seconds },
+    ];
+
+    return (
+        <section className="min-h-screen py-20 px-4 bg-[#FFFDF9] flex flex-col items-center justify-center font-sans">
+            <div className="max-w-4xl w-full text-center">
+                
+                {/* 1. MAIN HEADING */}
+                <motion.h1 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-4xl md:text-6xl font-black text-[#2D1B19] italic tracking-tighter mb-4"
+                >
+                    Simhastha Kumbh Mela <span className="text-orange-600">2028</span>
+                </motion.h1>
+
+                {/* 2. UPCOMING BADGE / LINE */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="flex flex-col items-center gap-3 mb-12"
+                >
+                    <div className="flex items-center gap-2 bg-orange-50 px-4 py-1 rounded-full border border-orange-100">
+                        <span className="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+                        <span className="text-[10px] font-black text-orange-600 uppercase tracking-[0.2em]">Upcoming Event</span>
+                    </div>
+                    <p className="text-gray-500 text-sm font-medium max-w-lg leading-relaxed">
+                        The upcoming Kumbh Mela in <span className="font-bold text-[#2D1B19]">Ujjain, Madhya Pradesh</span> is scheduled for <span className="text-orange-600 font-bold underline underline-offset-4">March 27, 2028</span>
+                    </p>
+                </motion.div>
+
+                {/* 3. THE COUNTER (Compact Version for All Devices) */}
+<div className="grid grid-cols-4 gap-2 md:gap-4 max-w-3xl mx-auto">
+    {timeUnits.map((unit, idx) => (
+        <motion.div
+            key={unit.label}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 + (idx * 0.05) }}
+            className="bg-white rounded-2xl md:rounded-[2rem] p-3 md:p-6 border border-orange-100 shadow-sm group hover:border-orange-500 transition-all duration-500"
+        >
+            <div className="h-8 md:h-14 flex items-center justify-center overflow-hidden">
+                <AnimatePresence mode="wait">
+                    <motion.span
+                        key={unit.value}
+                        initial={{ y: 15, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -15, opacity: 0 }}
+                        className="text-xl md:text-5xl font-black text-[#2D1B19] tabular-nums"
+                    >
+                        {String(unit.value).padStart(2, '0')}
+                    </motion.span>
+                </AnimatePresence>
+            </div>
+            <div className="mt-1 text-[8px] md:text-[10px] font-black uppercase tracking-wider text-gray-400 group-hover:text-orange-600 transition-colors">
+                {unit.label.slice(0, 3)} {/* Days -> Day, Minutes -> Min */}
+            </div>
+        </motion.div>
+    ))}
+</div>
+            </div>
+        </section>
+    );
 }
