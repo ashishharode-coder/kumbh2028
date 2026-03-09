@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Simhastha Kumbh 2028", 
+  title: "Simhastha Kumbh 2028",
   description: "Official Countdown for Ujjain Simhastha 2028",
   icons: {
-    icon: '/logo.jpeg', 
+    icon: "/logo.jpeg",
   },
 };
 
@@ -25,7 +27,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        
+        
+        {/* <Navbar /> */}
+
+        {/* Page Content */}
         {children}
+
+        {/* <Footer/> */}
+
       </body>
     </html>
   );
