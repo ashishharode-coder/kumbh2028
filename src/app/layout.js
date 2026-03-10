@@ -29,12 +29,12 @@ export default function RootLayout({ children }) {
       >
         
         
-        {/* <Navbar /> */}
+        <Navbar />
 
         {/* Page Content */}
         {children}
 
-        {/* <Footer/> */}
+        <Footer/>
 
       </body>
     </html>
