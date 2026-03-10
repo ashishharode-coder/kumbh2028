@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link'; // Vite ke 'Link' ki jagah
-import Image from 'next/image'; // 'img' tag ki jagah optimization ke liye
-import { usePathname } from 'next/navigation'; // 'useLocation' ki jagah Next.js hook
+import Link from 'next/link'; 
+import Image from 'next/image';
+import { usePathname } from 'next/navigation'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../../../public/logo.jpeg'; 
 
@@ -13,7 +13,6 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'Information', href: '/information' },
         { name: 'Stay', href: '/stay' },
         { name: 'Vehicle', href: '/vehicle' },
         { name: 'Store', href: '/store' },
