@@ -15,9 +15,9 @@ import {
 } from "lucide-react";
 
 // Components
-import Places from "@/components/Places";
-import PostFeed from "@/components/PostFeed";
-import MelaFeed from "@/components/MelaFeed"; // Path check kar lena agar component folder mein hai
+import Places from "@/app/user/components/Places";
+import PostFeed from "@/app/user/components/PostFeed";
+import MelaFeed from "@/app/user/components/MelaFeed"; // Path check kar lena agar component folder mein hai
 
 // Assets
 const ramghat = "/images/ramghat.jpg";

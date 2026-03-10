@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Aapke structure (src/app/logo.jpeg) ke hisab se sahi path:
-import logo from '../../app/logo.jpeg'; 
+import logo from '../../../../public/logo.jpeg'; 
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();

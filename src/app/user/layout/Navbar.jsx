@@ -5,11 +5,11 @@ import Link from 'next/link'; // Vite ke 'Link' ki jagah
 import Image from 'next/image'; // 'img' tag ki jagah optimization ke liye
 import { usePathname } from 'next/navigation'; // 'useLocation' ki jagah Next.js hook
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../app/logo.jpeg'; // Apne folder structure ke hisaab se path check karein
+import logo from '../../../../public/logo.jpeg'; 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const pathname = usePathname(); // Next.js hook to get current path
+    const pathname = usePathname(); 
 
     const navLinks = [
         { name: 'Home', href: '/' },

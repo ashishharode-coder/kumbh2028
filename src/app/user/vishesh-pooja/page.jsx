@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 // Import the detail view component
-import PoojaDetailView from '@/components/PoojaDetailView'; 
+import PoojaDetailView from '@/app/user/components/PoojaDetailView'; 
 
 const poojawithpandit = "/images/poojawithpandit.jpg"; 
 const poojaimg1 = "/images/poojaimg.jpg";
