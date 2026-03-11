@@ -14,9 +14,7 @@ const poojaimg2 = "/images/poojaimg2.jpg";
 const poojaimg3 = "/images/poojaimg3.jpg";
 
 const PoojaDetailView = ({ pooja, onBack, onBook }) => {
-  const galleryImages = [poojawithpandit, poojaimg1, poojaimg2, poojaimg3];
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+  // Check if pooja exists, else use default data
   const data = pooja || {
     title: "Mahakal Bhasm Aarti Special",
     price: 2100,
@@ -25,11 +23,23 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
     benefits: ["Mental Peace", "Health Prosperity", "Dosh Nivaran", "Positive Aura"],
     rating: 4.9,
     reviews: 1240,
-    description: "Experience the divine energy of Lord Shiva with our specialized Bhasm Aarti ritual performed by certified Pandits. This ritual includes the sacred ash ceremony, vedic chanting, and personalized sankalp."
+    description: "Experience the divine energy of Lord Shiva with our specialized Bhasm Aarti ritual performed by certified Pandits. This ritual includes the sacred ash ceremony, vedic chanting, and personalized sankalp.",
+    // Default images if not provided in props
+    images: [poojawithpandit, poojaimg1, poojaimg2, poojaimg3]
   };
+
+  // Use images from data object or fallback
+  const galleryImages = data.images || [poojawithpandit, poojaimg1, poojaimg2, poojaimg3];
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextImage = () => setCurrentIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
   const prevImage = () => setCurrentIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+
+  // Mobile Swipe Logic
+  const handleDragEnd = (event, info) => {
+    if (info.offset.x > 50) prevImage();
+    else if (info.offset.x < -50) nextImage();
+  };
 
   return (
     <motion.div 
@@ -37,7 +47,7 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
       animate={{ opacity: 1 }}
       className="min-h-screen bg-[#FDFCF9] flex flex-col"
     >
-      <div className="pt-24 md:pt-32 pb-10">
+      <div className="pt-21 md:pt-26 pb-3">
         
         {/* Top Actions */}
         <div className="max-w-7xl mx-auto px-4 md:px-8 mb-6 flex justify-between items-center">
@@ -48,7 +58,6 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
             <div className="p-2 bg-white rounded-full shadow-sm border border-orange-50 group-hover:bg-orange-600 group-hover:text-white transition-all">
               <ArrowLeft size={18} />
             </div>
-            <span>Back</span>
           </button>
           <div className="flex gap-2">
             <button className="p-2.5 bg-white rounded-full shadow-sm border border-orange-50 text-gray-400 hover:text-orange-600 transition-colors"><Share2 size={16} /></button>
@@ -56,26 +65,35 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
           </div>
         </div>
 
-        <main className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <main className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
-          {/* LEFT: GALLERY SECTION */}
-          <div className="lg:col-span-7">
+          {/* LEFT: GALLERY SECTION - Sticky on Desktop */}
+          <div className="lg:col-span-7 lg:sticky lg:top-32">
             <div className="relative aspect-[4/5] md:aspect-video lg:aspect-[4/3] w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl border-4 md:border-8 border-white group bg-gray-100">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={handleDragEnd}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="relative w-full h-full"
+                  className="relative w-full h-full touch-pan-y cursor-grab active:cursor-grabbing"
                 >
-                  <Image src={galleryImages[currentIndex]} alt="Pooja" fill className="object-cover" priority />
+                  <Image 
+                    src={galleryImages[currentIndex]} 
+                    alt={data.title} 
+                    fill 
+                    className="object-cover pointer-events-none" 
+                    priority 
+                  />
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navigation Arrows - Visible on all devices */}
-              <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between items-center z-10">
+              {/* Navigation Arrows - Desktop Only (Hidden on Mobile) */}
+              <div className="hidden lg:flex absolute inset-x-4 top-1/2 -translate-y-1/2 justify-between items-center z-10">
                 <button 
                   onClick={prevImage} 
                   className="p-3 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:bg-orange-600 hover:text-white transition-all active:scale-90"
@@ -90,9 +108,8 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
                 </button>
               </div>
               
-              <div className="absolute top-6 left-6 bg-orange-600 text-white px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg z-10">Live Ujjain</div>
               
-              {/* Pagination Dots - Dynamic Orange Color */}
+              {/* Pagination Dots */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2.5 px-4 py-2 bg-black/30 backdrop-blur-md rounded-full z-10">
                 {galleryImages.map((_, idx) => (
                   <button
@@ -109,7 +126,7 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
             </div>
           </div>
 
-          {/* RIGHT: DETAILS SECTION */}
+          {/* RIGHT: DETAILS SECTION - Scrollable by Default */}
           <div className="lg:col-span-5 flex flex-col space-y-6 py-2">
             <section className="space-y-3">
               <div className="flex items-center gap-2">
@@ -147,7 +164,7 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
                 <Clock size={12} /> Ritual Description
               </h2>
               <p className="text-gray-500 text-sm leading-relaxed font-medium bg-white p-6 rounded-[2.5rem] border border-orange-50 shadow-sm">
-                {data.description}
+                Responsive Arrows: Arrow buttons ke div mein hidden lg:flex class add ki hai, jisse wo sirf desktop par dikhenge.Responsive Arrows: Arrow buttons ke div mein hidden lg:flex class add ki hai, jisse wo sirf desktop par dikhenge.Responsive Arrows: Arrow buttons ke div mein hidden lg:flex class add ki hai, jisse wo sirf desktop par dikhenge.Responsive Arrows: Arrow buttons ke div mein hidden lg:flex class add ki hai, jisse wo sirf desktop par dikhenge.Responsive Arrows: Arrow buttons ke div mein hidden lg:flex class add ki hai, jisse wo sirf desktop par dikhenge.
               </p>
             </div>
 
@@ -155,7 +172,7 @@ const PoojaDetailView = ({ pooja, onBack, onBook }) => {
             <div className="space-y-3">
               <h2 className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Benefits</h2>
               <div className="flex flex-wrap gap-2">
-                {data.benefits.map((benefit, idx) => (
+                {data.benefits && data.benefits.map((benefit, idx) => (
                   <span key={idx} className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl text-gray-700 text-[10px] font-bold border border-orange-50 shadow-sm">
                     <CheckCircle2 size={12} className="text-green-500" /> {benefit}
                   </span>

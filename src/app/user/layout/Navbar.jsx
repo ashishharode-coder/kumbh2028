@@ -12,11 +12,11 @@ const Navbar = () => {
     const pathname = usePathname(); 
 
     const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'Stay', href: '/stay' },
-        { name: 'Vehicle', href: '/vehicle' },
-        { name: 'Store', href: '/store' },
-        { name: 'Vishesh Pooja', href: '/vishesh-pooja' },
+       { name: 'Home', href: '/user' },
+        { name: 'Stay', href: '/user/stay' },
+        { name: 'Vehicle', href: '/user/vehicle' },
+        { name: 'Store', href: '/user/store' },
+        { name: 'Vishesh Pooja', href: '/user/vishesh-pooja' },
     ];
 
     return (
