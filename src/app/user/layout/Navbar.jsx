@@ -12,7 +12,7 @@ const Navbar = () => {
     const pathname = usePathname(); 
 
     const navLinks = [
-       { name: 'Home', href: '/user' },
+       { name: 'Home', href: '/' },
         { name: 'Stay', href: '/user/stay' },
         { name: 'Vehicle', href: '/user/vehicle' },
         { name: 'Store', href: '/user/store' },
@@ -125,7 +125,7 @@ const Navbar = () => {
                                         }`}
                                     >
                                         <span>{link.name}</span>
-                                        {isActive && <span className="text-orange-500">✨</span>}
+                                        {isActive && <span className="w-1 h-1 rounded-full bg-orange-600 shadow-[0_0_8px_rgba(234,88,12,0.6)]" />}
                                     </Link>
                                 );
                             })}

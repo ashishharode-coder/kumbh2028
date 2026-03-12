@@ -80,54 +80,54 @@ const VisheshPooja = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FFFDF9] text-[#2D1B19] pb-8">
+        <div className="min-h-screen bg-[#FFFDF9] text-[#2D1B19] ">
             {/* Header Section */}
-            <header className="pt-24 pb-6 px-6 text-center bg-white">
+            <header className="pt-24 pb-3 px-6 text-center bg-white">
                 <span className="text-orange-600 font-bold text-[10px] tracking-widest uppercase block mb-1">🚩 Spiritual Services</span>
                 <h1 className="text-3xl md:text-5xl font-black italic">Vishesh <span className="text-orange-600">Pooja</span></h1>
             </header>
 
             {/* STICKY FILTER AREA (Synced with Store UI) */}
-            <div className="sticky top-[64px] z-40 bg-white/95 backdrop-blur-md border-b border-orange-100 py-3 shadow-sm">
-                <div className="max-w-7xl mx-auto space-y-3">
-                    {/* Category Tabs */}
-                    <div className="flex overflow-x-auto no-scrollbar gap-2 px-4 md:justify-center">
+            <div className="sticky top-[70px] md:top-[85px] z-40 bg-white/95 backdrop-blur-md border-b border-orange-100 py-2 md:py-4 shadow-sm transition-all">
+                <div className="max-w-7xl mx-auto space-y-4">
+                    <div className="flex overflow-x-auto no-scrollbar gap-2 px-4 justify-start md:justify-center">
                         {tabs.map(tab => (
-                            <button
-                                key={tab}
-                                onClick={() => { setActiveTab(tab); setCurrentPage(1); }}
-                                className={`px-5 py-2 rounded-full text-[10px] md:text-xs font-bold transition-all whitespace-nowrap ${
-                                    activeTab === tab ? 'bg-orange-600 text-white shadow-md' : 'bg-orange-50 text-orange-900/40 hover:bg-orange-100'
-                                }`}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
+                        <button
+                        key={tab}
+                        onClick={() => { setActiveTab(tab); setCurrentPage(1); }}
+                        className={`px-5 py-2 rounded-full text-[10px] md:text-xs font-bold transition-all whitespace-nowrap flex-shrink-0 ${
+                        activeTab === tab 
+                        ? 'bg-orange-600 text-white shadow-md' 
+                        : 'bg-orange-50 text-orange-900/40 hover:bg-orange-100'
+                    }`}
+                >
+                    {tab}
+                </button>
+            ))}
+        </div>
 
-                    {/* Sorting Filters (Price & Date) */}
-                    <div className="flex flex-wrap items-center justify-center gap-2 px-4">
-                        {[
-                            { id: 'newest', label: 'Newest' },
-                            { id: 'low', label: 'Low to High' },
-                            { id: 'high', label: 'High to Low' }
-                        ].map(opt => (
-                            <button
-                                key={opt.id}
-                                onClick={() => { setSortOrder(opt.id); setCurrentPage(1); }}
-                                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-[9px] md:text-[10px] font-black border transition-all ${
-                                    sortOrder === opt.id
-                                        ? 'bg-orange-50 border-orange-600 text-orange-600 shadow-sm'
-                                        : 'bg-transparent border-gray-100 text-gray-400'
-                                }`}
-                            >
-                                {opt.label}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
+        {/* Sorting Filters */}
+        <div className="flex flex-wrap items-center justify-center gap-2 px-4">
+            {[
+                { id: 'newest', label: 'Newest' },
+                { id: 'low', label: 'Low to High' },
+                { id: 'high', label: 'High to Low' }
+            ].map(opt => (
+                <button
+                    key={opt.id}
+                    onClick={() => { setSortOrder(opt.id); setCurrentPage(1); }}
+                    className={`px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-[9px] md:text-[10px] font-black border transition-all ${
+                        sortOrder === opt.id
+                            ? 'bg-orange-50 border-orange-600 text-orange-600 shadow-sm'
+                            : 'bg-transparent border-gray-100 text-gray-400'
+                    }`}
+                >
+                    {opt.label}
+                </button>
+            ))}
+        </div>
+    </div>
+</div>
             {/* MAIN GRID */}
             <main className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
@@ -189,7 +189,7 @@ const VisheshPooja = () => {
 
                 {/* PAGINATION */}
                 {totalPages > 1 && (
-                    <div className="mt-16 flex justify-center items-center gap-2">
+                    <div className="mt-10 flex justify-center items-center gap-2">
                         <button
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(p => p - 1)}
