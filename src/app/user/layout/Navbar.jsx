@@ -1,18 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link'; 
 import Image from 'next/image';
 import { usePathname } from 'next/navigation'; 
 import { motion, AnimatePresence } from 'framer-motion';
+import { User } from 'lucide-react'; // Account icon ke liye
 import logo from '../../../../public/logo.jpeg'; 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const pathname = usePathname(); 
 
+    useEffect(() => {
+        const status = localStorage.getItem('isLoggedIn');
+        if (status === 'true') {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
     const navLinks = [
-       { name: 'Home', href: '/' },
+        { name: 'Home', href: '/' },
         { name: 'Stay', href: '/user/stay' },
         { name: 'Vehicle', href: '/user/vehicle' },
         { name: 'Store', href: '/user/store' },
@@ -21,15 +30,12 @@ const Navbar = () => {
 
     return (
         <nav className="fixed top-0 left-0 w-full z-[100] p-3 md:p-5">
-            {/* Main Premium Container */}
             <div className="max-w-7xl mx-auto rounded-[2.5rem] bg-white/80 backdrop-blur-xl border border-orange-100 shadow-[0_10px_40px_rgba(150,50,0,0.1)] p-2 md:p-3">
                 <div className="flex items-center justify-between">
                     
-                    {/* Left: Brand Identity */}
                     <div className="flex items-center gap-4 md:gap-10">
                         <Link href="/" className="flex items-center gap-2 pl-2">
                             <div className="relative">
-                                {/* Next.js Image component for better performance */}
                                 <div className="w-10 h-10 relative overflow-hidden rounded-full border-2 border-orange-400">
                                     <Image 
                                         src={logo} 
@@ -49,7 +55,6 @@ const Navbar = () => {
                             </div>
                         </Link>
 
-                        {/* Desktop Navigation */}
                         <div className="hidden lg:flex items-center gap-1">
                             {navLinks.map((link) => {
                                 const isActive = pathname === link.href;
@@ -78,14 +83,20 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Right: Actions */}
+                    {/* Right side: Login or Account Logic */}
                     <div className="flex items-center gap-3 pr-2">
-                        <Link href="/login" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
-                            <span>Login</span>
-                            <span className="group-hover:translate-x-1 transition-transform">→</span>
-                        </Link>
+                        {isLoggedIn ? (
+                            <Link href="/user/profile" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
+                                <User size={16} className="text-orange-400" />
+                                <span>Account</span>
+                            </Link>
+                        ) : (
+                            <Link href="/user/login" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
+                                <span>Login</span>
+                                <span className="group-hover:translate-x-1 transition-transform">→</span>
+                            </Link>
+                        )}
                         
-                        {/* Mobile Toggle Button */}
                         <button 
                             onClick={() => setIsOpen(!isOpen)} 
                             className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-orange-50 text-orange-600 border border-orange-100"
@@ -101,7 +112,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div 
@@ -132,13 +142,25 @@ const Navbar = () => {
                             
                             <div className="h-px bg-orange-50 my-2"></div>
                             
-                            <Link 
-                                href="/login" 
-                                onClick={() => setIsOpen(false)}
-                                className="w-full text-center p-4 bg-gradient-to-r from-orange-500 to-red-700 text-white rounded-2xl font-black text-sm shadow-lg"
-                            >
-                                Login Account
-                            </Link>
+                            {/* Mobile Menu Action Button */}
+                            {isLoggedIn ? (
+                                <Link 
+                                    href="/user/profile" 
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-full flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-orange-500 to-red-700 text-white rounded-2xl font-black text-sm shadow-lg"
+                                >
+                                    <User size={18} />
+                                    My Account
+                                </Link>
+                            ) : (
+                                <Link 
+                                    href="/user/login" 
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-full text-center p-4 bg-gradient-to-r from-orange-500 to-red-700 text-white rounded-2xl font-black text-sm shadow-lg"
+                                >
+                                    Login Account
+                                </Link>
+                            )}
                         </div>
                     </motion.div>
                 )}

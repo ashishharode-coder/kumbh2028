@@ -1,4 +1,4 @@
-import Loader from "@/components/ui/Loader";
+import Loader from "@/comman/ui/Loader";
 
 export default function Loading() {
     // Ye component tab dikhega jab Next.js routes ke beech navigate karega
