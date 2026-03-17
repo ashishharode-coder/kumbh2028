@@ -86,7 +86,7 @@ const Navbar = () => {
                     {/* Right side: Login or Account Logic */}
                     <div className="flex items-center gap-3 pr-2">
                         {isLoggedIn ? (
-                            <Link href="/user/profile" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
+                            <Link href="/user/account" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
                                 <User size={16} className="text-orange-400" />
                                 <span>Account</span>
                             </Link>
