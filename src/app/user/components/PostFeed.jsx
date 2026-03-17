@@ -14,7 +14,7 @@ const PostCard = ({ item }) => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.98 }}
-      className="bg-white border border-gray-100 rounded-xl mb-4 w-full max-w-[420px] mx-auto shadow-sm overflow-hidden"
+      className=" bg-white border border-gray-100 rounded-xl mb-4 w-full max-w-[620px] mx-auto shadow-sm overflow-hidden"
     >
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-gray-50">

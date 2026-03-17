@@ -159,7 +159,7 @@ const HomePage = () => {
             {[1, 2].map((i) => (
               <span key={i} className="mx-8">
                 🚩 Ujjain Sihasth 2028: New parking zones ready • 🚩 Morning
-                Aarti crowd peaks • 🚩 24/7 Helpline launched
+                Aarti crowd peaks • 🚩 24/7 Helpline launched • 🚩Total Visitor in Sihasth 15M
               </span>
             ))}
           </div>
@@ -228,7 +228,7 @@ const HomePage = () => {
       <section className="max-w-[1400px] mx-auto px-4 mt-12 mb-8">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
           {/* LEFT SIDE (40%) */}
-          <div className="w-full lg:w-[40%]">
+          <div className="w-full lg:w-[65%]">
             <PostFeed
               currentPosts={postsToDisplay}
               currentPage={currentPage}
@@ -238,7 +238,7 @@ const HomePage = () => {
           </div>
 
           {/* RIGHT SIDE (60%) */}
-          <div className="w-full lg:w-[60%] lg:sticky lg:top-24">
+          <div className="w-full lg:w-[50%] lg:sticky lg:top-24">
             <MelaFeed />
           </div>
         </div>

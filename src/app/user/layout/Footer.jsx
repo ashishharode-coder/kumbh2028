@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ROUTES } from "@/app/constant/routes";
 
 import logo from '../../../../public/logo.jpeg'; 
 
@@ -12,11 +13,11 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = [
-        { name: 'Information', href: '/information' },
-        { name: 'Stay', href: '/stay' },
-        { name: 'Vehicle', href: '/vehicle' },
-        { name: 'Store', href: '/store' },
-        { name: 'Vishesh Pooja', href: '/vishesh-pooja' },
+        { name: 'Home', href: ROUTES.USER_HOME },
+        { name: 'Stay', href: ROUTES.USER_STAY },
+        { name: 'Vehicle', href: ROUTES.USER_VEHICLE },
+        { name: 'Store', href: ROUTES.USER_STORE },
+        { name: 'Vishesh Pooja', href: ROUTES.USER_VISHESH_POOJA },
     ];
 
     return (
@@ -28,7 +29,7 @@ const Footer = () => {
                     
                     {/* Column 1: Branding */}
                     <div className="space-y-6">
-                        <Link href="/" className="flex items-center gap-3">
+                        <Link href={ROUTES.USER_HOME} className="flex items-center gap-3">
                             <div className="relative w-12 h-12">
                                 <Image 
                                     src={logo} 
@@ -99,7 +100,7 @@ const Footer = () => {
                         <div className="p-6 rounded-[2rem] bg-gradient-to-br from-orange-500 to-red-700 text-white shadow-xl shadow-orange-200">
                             <h4 className="font-black text-lg mb-2">Plan Your Visit</h4>
                             <p className="text-xs text-orange-50 opacity-90 mb-4 font-medium">Get latest updates about Snan dates.</p>
-                            <Link href="/login" className="flex items-center justify-center gap-2 bg-white text-orange-600 py-3 rounded-2xl text-xs font-black hover:bg-[#2D1B19] hover:text-white transition-all duration-500">
+                            <Link href={ROUTES.USER_LOGIN} className="flex items-center justify-center gap-2 bg-white text-orange-600 py-3 rounded-2xl text-xs font-black hover:bg-[#2D1B19] hover:text-white transition-all duration-500">
                                 REGISTER NOW <ArrowUpRight size={14} />
                             </Link>
                         </div>
