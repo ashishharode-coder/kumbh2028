@@ -4,6 +4,8 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StayDetailView from '../components/StayDetailView';
 import { IoHome } from "react-icons/io5";
+import { useRouter } from 'next/navigation';
+import { ROUTES } from "@/app/constant/routes";
 
 
 // --- Images ---
@@ -49,17 +51,19 @@ const Stay = () => {
         { id: 24, title: 'Lotus Lake Tent', type: 'Tent', price: 2700, beds: '3 Bed', address: 'Lotus Lake Area', img: tent2, tag: 'Nature Stay' },
     ];
 
-    const [selectedStay, setSelectedStay] = useState(null);
+    const router = useRouter();
+
     const [activeTab, setActiveTab] = useState('All');
     const [sortOrder, setSortOrder] = useState('low');
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedStay, setSelectedStay] = useState(null);
     const itemsPerPage = 20;
 
     const tabs = ['All', 'Tent', 'Hotel', 'Dormitory', 'VVIP Suites', 'Ashram']; 
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [currentPage, activeTab, sortOrder, selectedStay]);
+    }, [currentPage, activeTab, sortOrder, ]);
 
     const filteredAndSorted = useMemo(() => {
         let result = allOptions.filter(opt => activeTab === 'All' || opt.type === activeTab);
@@ -160,7 +164,7 @@ const Stay = () => {
                                                 initial={{ opacity: 0, scale: 0.95 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.95 }}
-                                                onClick={() => setSelectedStay(item)}
+                                                onClick={() => router.push(ROUTES.USER_STAY_DETAIL_VIEW(item.id))}
                                                 className="bg-white rounded-2xl border border-orange-100 shadow-sm hover:shadow-xl transition-shadow flex flex-col group overflow-hidden cursor-pointer"
                                             >
                                                 <div className="relative aspect-video overflow-hidden bg-gray-50">
@@ -185,7 +189,12 @@ const Stay = () => {
                                                             <p className="text-lg font-black text-[#2D1B19]">₹{item.price}</p>
                                                             <p className="text-[8px] text-gray-400 uppercase font-bold tracking-widest">per night</p>
                                                         </div>
-                                                        <button className="group/btn relative flex items-center justify-center gap-2 bg-[#2D1B19] text-white px-4 py-2 rounded-xl overflow-hidden shadow-lg transition-all hover:bg-orange-600">
+                                                        <button 
+                                                         onClick={(e) => { 
+                                                            e.stopPropagation();
+                                                            router.push(ROUTES.USER_STAY_DETAIL_VIEW(item.id));  
+                                                            }}
+                                                        className="group/btn relative flex items-center justify-center gap-2 bg-[#2D1B19] text-white px-4 py-2 rounded-xl overflow-hidden shadow-lg transition-all hover:bg-orange-600">
                                                             <span className="text-[10px] font-black tracking-tight uppercase">Reserve</span>
                                                             <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
                                                         </button>

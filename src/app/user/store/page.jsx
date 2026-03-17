@@ -3,7 +3,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductDetailView from '@/app/user/components/ProductDetailView';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from "@/app/constant/routes";
 
 const product1 = "/images/product1.jpg";
 const product2 = "/images/product2.jpg";
@@ -11,6 +12,9 @@ const product3 = "/images/product3.jpg";
 const product4 = "/images/product4.jpg";
 
 const Store = () => {
+    
+     const router = useRouter();
+
     const allItems = useMemo(() => [
         { id: 1, title: '5-Mukhi Nepali Rudraksh', type: 'Rudraksh', price: 450, date: '2024-03-01', img: product1, tag: 'Best Seller', originalPrice: 600, description: "Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.Authentic 5-mukhi Rudraksh from Nepal, known for peace and health.", specifications: ["Natural Seed", "Nepali Origin", "Lab Certified"] },
         { id: 2, title: 'Original Tulsi Mala', type: 'Mala', price: 150, date: '2024-03-02', img: product2, tag: 'Original', originalPrice: 300, description: "Handmade Tulsi Mala for chanting and spiritual protection.", specifications: ["Pure Tulsi Wood", "108 Beads", "Hand-knotted"] },
@@ -44,14 +48,13 @@ const Store = () => {
     const [activeTab, setActiveTab] = useState('All');
     const [sortOrder, setSortOrder] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedProduct, setSelectedProduct] = useState(null); 
     const itemsPerPage = 20;
 
     const tabs = ['All', 'Rudraksh', 'Mala', 'Dhoop', 'Bhashm', 'Cloth', 'Bracelet', 'Prasad','Pooja Essentials', 'Spiritual Books', 'Yantras', 'Incense Holders', 'Puja Thalis', 'Holy Water Bottles', 'Meditation Cushions', 'Divine Statues'];
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [currentPage, activeTab, sortOrder, selectedProduct]);
+    }, [currentPage, activeTab, sortOrder, ]);
 
     const filteredAndSorted = useMemo(() => {
         let result = allItems.filter(opt => activeTab === 'All' || opt.type === activeTab);
@@ -68,24 +71,6 @@ const Store = () => {
 
     const totalPages = Math.ceil(filteredAndSorted.length / itemsPerPage);
 
-    if (selectedProduct) {
-        return (
-            <ProductDetailView 
-                product={{
-                    ...selectedProduct,
-                    category: selectedProduct.type,
-                    rating: 4.8,
-                    reviews: 120,
-                    codAvailable: true,
-                    returnAvailable: true,
-                    freeDelivery: true,
-                    images: [selectedProduct.img, product2, product3, product4]
-                }} 
-                onBack={() => setSelectedProduct(null)} 
-                onAddToCart={(prod) => console.log("Added to cart:", prod)} 
-            />
-        );
-    }
 
     return (
         <div className="min-h-screen bg-[#FFFDF9] text-[#2D1B19] ">
@@ -174,7 +159,7 @@ const Store = () => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
-                                    onClick={() => setSelectedProduct(item)}
+                                    onClick={() => router.push(ROUTES.USER_PRODUCT_DETAIL_VIEW(item.id))}
                                     className="bg-white rounded-2xl border border-orange-100 shadow-sm hover:shadow-xl transition-shadow flex flex-col group overflow-hidden cursor-pointer"
                                 >
                                     <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -204,8 +189,8 @@ const Store = () => {
                                             <button 
                                                 onClick={(e) => { 
                                                     e.stopPropagation();
-                                                    setSelectedProduct(item);
-                                                }} 
+                                                    router.push(ROUTES.USER_PRODUCT_DETAIL_VIEW(item.id));  
+                                                    }}
                                                 className="group/btn relative flex items-center justify-center gap-1 bg-[#2D1B19] text-white pl-3 pr-2 py-1.5 md:pl-4 md:pr-3 md:py-2 rounded-full overflow-hidden transition-all duration-300 hover:bg-orange-600 active:scale-95 shadow-lg"
                                             >
                                                 <span className="text-[9px] md:text-[10px] font-black tracking-tight uppercase">Add</span>

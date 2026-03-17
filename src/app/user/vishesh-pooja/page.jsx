@@ -3,11 +3,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import PoojaDetailView from '@/app/user/components/PoojaDetailView'; 
+import { useRouter } from 'next/navigation';
+import { ROUTES } from "@/app/constant/routes";
 
 const VisheshPooja = () => {
+
+    const router = useRouter();
     // 1. STATE FOR NAVIGATION & FILTERS
-    const [selectedPooja, setSelectedPooja] = useState(null);
     const [activeTab, setActiveTab] = useState('All');
     const [sortOrder, setSortOrder] = useState('newest'); 
     const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +51,7 @@ const VisheshPooja = () => {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [currentPage, activeTab, sortOrder, selectedPooja]);
+    }, [currentPage, activeTab, sortOrder]);
 
     // 3. FILTER & SORT LOGIC (Same as Store)
     const filteredAndSorted = useMemo(() => {
@@ -69,15 +71,6 @@ const VisheshPooja = () => {
 
     const totalPages = Math.ceil(filteredAndSorted.length / itemsPerPage);
 
-    if (selectedPooja) {
-        return (
-            <PoojaDetailView 
-                pooja={selectedPooja} 
-                onBack={() => setSelectedPooja(null)} 
-                onBook={(data) => alert(`Booking confirmed for ${data.title}`)} 
-            />
-        );
-    }
 
     return (
         <div className="min-h-screen bg-[#FFFDF9] text-[#2D1B19] ">
@@ -139,7 +132,8 @@ const VisheshPooja = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                className="bg-white rounded-2xl border border-orange-100 shadow-sm hover:shadow-xl transition-shadow flex flex-col group overflow-hidden"
+                                onClick={() => router.push(ROUTES.USER_POOJA_DETAIL_VIEW(pooja.id))}
+                                className="bg-white rounded-2xl border border-orange-100 shadow-sm hover:shadow-xl transition-shadow flex flex-col group overflow-hidden cursor-pointer"
                             >
                                 {/* Image Wrapper */}
                                 <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -168,7 +162,10 @@ const VisheshPooja = () => {
                                         <p className="text-[14px] md:text-lg font-black text-[#2D1B19]">₹{pooja.price}</p>
                                         
                                         <button 
-                                            onClick={() => setSelectedPooja(pooja)}
+                                            onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    router.push(ROUTES.USER_POOJA_DETAIL_VIEW(pooja.id));
+                                                }}
                                             className="group/btn relative flex items-center justify-center gap-1 bg-[#2D1B19] text-white pl-3 pr-2 py-1.5 md:pl-4 md:pr-3 md:py-2 rounded-full overflow-hidden transition-all duration-300 hover:bg-orange-600 active:scale-95 shadow-lg"
                                         >
                                             <span className="text-[9px] md:text-[10px] font-black tracking-tight uppercase">Book</span>

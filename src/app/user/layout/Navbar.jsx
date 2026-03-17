@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User } from 'lucide-react'; // Account icon ke liye
 import logo from '../../../../public/logo.jpeg'; 
+import { ROUTES } from "@/app/constant/routes";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -21,11 +22,11 @@ const Navbar = () => {
     }, []);
 
     const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'Stay', href: '/user/stay' },
-        { name: 'Vehicle', href: '/user/vehicle' },
-        { name: 'Store', href: '/user/store' },
-        { name: 'Vishesh Pooja', href: '/user/vishesh-pooja' },
+        { name: 'Home', href: ROUTES.USER_HOME },
+        { name: 'Stay', href: ROUTES.USER_STAY },
+        { name: 'Vehicle', href: ROUTES.USER_VEHICLE },
+        { name: 'Store', href: ROUTES.USER_STORE },
+        { name: 'Vishesh Pooja', href: ROUTES.USER_VISHESH_POOJA },
     ];
 
     return (
@@ -34,7 +35,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between">
                     
                     <div className="flex items-center gap-4 md:gap-10">
-                        <Link href="/" className="flex items-center gap-2 pl-2">
+                        <Link href={ROUTES.USER_HOME} className="flex items-center gap-2 pl-2">
                             <div className="relative">
                                 <div className="w-10 h-10 relative overflow-hidden rounded-full border-2 border-orange-400">
                                     <Image 
@@ -86,12 +87,12 @@ const Navbar = () => {
                     {/* Right side: Login or Account Logic */}
                     <div className="flex items-center gap-3 pr-2">
                         {isLoggedIn ? (
-                            <Link href="/user/account" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
+                            <Link href={ROUTES.USER_ACCOUNT} className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
                                 <User size={16} className="text-orange-400" />
                                 <span>Account</span>
                             </Link>
                         ) : (
-                            <Link href="/user/login" className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
+                            <Link href={ROUTES.USER_LOGIN} className="hidden sm:flex group items-center gap-2 bg-[#2D1B19] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-orange-600 transition-all duration-500 shadow-md">
                                 <span>Login</span>
                                 <span className="group-hover:translate-x-1 transition-transform">→</span>
                             </Link>
@@ -145,7 +146,7 @@ const Navbar = () => {
                             {/* Mobile Menu Action Button */}
                             {isLoggedIn ? (
                                 <Link 
-                                    href="/user/profile" 
+                                    href={ROUTES.USER_ACCOUNT} 
                                     onClick={() => setIsOpen(false)}
                                     className="w-full flex items-center justify-center gap-2 p-4 bg-gradient-to-r from-orange-500 to-red-700 text-white rounded-2xl font-black text-sm shadow-lg"
                                 >
@@ -154,7 +155,7 @@ const Navbar = () => {
                                 </Link>
                             ) : (
                                 <Link 
-                                    href="/user/login" 
+                                    href={ROUTES.USER_LOGIN} 
                                     onClick={() => setIsOpen(false)}
                                     className="w-full text-center p-4 bg-gradient-to-r from-orange-500 to-red-700 text-white rounded-2xl font-black text-sm shadow-lg"
                                 >
