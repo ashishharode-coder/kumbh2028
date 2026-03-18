@@ -26,6 +26,17 @@ const createHeros = async (req, res) => {
     }
 };
 
+// GET ALL
+const getAllHeros = async (req, res) => {
+    try {
+        const data = await Heros.find();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export default {
-    createHeros
+    createHeros,
+    getAllHeros
 };
