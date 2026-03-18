@@ -18,5 +18,5 @@ const upload = multer({ storage: storage });
 
 // routes
 router.post("/heros", upload.single("image"), herosController.createHeros);
-
+router.get("/heros", herosController.getAllHeros);
 export default router;
