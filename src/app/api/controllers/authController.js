@@ -59,7 +59,7 @@ export const verifyOtp = async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ mobile });
+  const user = await OTP.findOne({ mobile });
 
   if (!user) {
     return res.status(400).json({
