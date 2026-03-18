@@ -36,7 +36,19 @@ const getAllHeros = async (req, res) => {
     }
 };
 
+// GET SINGLE
+const getSingleHeros = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await Heros.findById(id);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export default {
     createHeros,
-    getAllHeros
+    getAllHeros,
+    getSingleHeros
 };
