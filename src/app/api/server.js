@@ -14,16 +14,16 @@ connectDB();
 app.use("/uploads", express.static("uploads"));
 
 // import routes
-import herosRoutes from "./routes/herosRoutes.js"
-app.use("/api", herosRoutes);
+import herosRoutes from "./routes/herosRoutes.js";
+app.use("/api/heros", herosRoutes);
 
 //Opt Login user 
-import authRoutes from "./routes/authRoutes.js"
+import authRoutes from "./routes/authRoutes.js";
 app.use("/api/auth", authRoutes);
 
 //user routes
 import userRoutes from "./routes/userRoutes.js";
-app.use("/", userRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server started on port " + process.env.PORT);
