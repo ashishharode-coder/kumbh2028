@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { CiGrid41 } from 'react-icons/ci';
 import { ROUTES } from "@/app/constant/routes";
+import RecommendationRow from './RecommendationRow';
 
 
 const postsData = {
@@ -118,7 +119,7 @@ const Account = () => {
             </div>
 
             {/* --- Navigation --- */}
-<div className="sticky top-[70px] z-40 bg-white/90 backdrop-blur-md border-b border-orange-100 py-3 mb-6">
+<div className="sticky top-[70px] md:top-[85px] z-40 bg-white/90 backdrop-blur-md border-b border-orange-100 py-3 mb-6">
     <div className="max-w-7xl mx-auto px-2 md:px-4 flex justify-center gap-1.5 md:gap-3">
         
         {/* --- Profile Button --- */}
@@ -248,79 +249,82 @@ const Account = () => {
         )}
 
         {activeTab === 'history' && selectedHistory && (
-            <motion.div key={selectedHistory} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {historyData[selectedHistory] && historyData[selectedHistory].length > 0 ? (
-                    <>
-                        <div className="col-span-full mb-2 flex items-center justify-between">
-                            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-600 flex items-center gap-2">
-                                <ShoppingBag size={12}/> {categories.find(c => c.id === selectedHistory)?.label}
-                            </h2>
-                        </div>
-                        {historyData[selectedHistory].map((item) => (
-                            <AccountCard key={item.id} item={item} />
-                        ))}
-                    </>
-                ) : (
-                   
-<div className="col-span-full py-6 md:py-10 flex flex-row items-center justify-center gap-6 md:gap-10 max-w-lg mx-auto bg-orange-50/30 rounded-[2.5rem] px-8 border border-orange-100/50">
-    
-    {/* Left Side: Icon Container */}
-    <div className="relative flex-shrink-0">
-        {/* Decorative Background for Icon */}
-        <div className="absolute inset-0 bg-white rounded-3xl rotate-6 shadow-sm" />
-        <div className="absolute inset-0 border border-orange-200 rounded-3xl -rotate-3" />
-        
-        <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative z-10 w-16 h-16 md:w-20 md:h-20 bg-white rounded-3xl shadow-xl shadow-orange-100/50 flex items-center justify-center text-orange-600 border border-white"
-        >
-            <div className="relative">
-                {React.cloneElement(categories.find(c => c.id === selectedHistory)?.icon || <Package />, { 
-                    size: 28, 
-                    strokeWidth: 1.8 
-                })}
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full" />
-            </div>
-        </motion.div>
-    </div>
+    <motion.div 
+        key={selectedHistory} 
+        initial={{ opacity: 0, y: 10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        exit={{ opacity: 0 }} 
+    >
+        {/* 1. Content Section (Cards or Empty State) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {historyData[selectedHistory] && historyData[selectedHistory].length > 0 ? (
+                <>
+                    <div className="col-span-full mb-2 flex items-center justify-between">
+                        <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-600 flex items-center gap-2">
+                            <ShoppingBag size={12}/> {categories.find(c => c.id === selectedHistory)?.label}
+                        </h2>
+                    </div>
+                    {historyData[selectedHistory].map((item) => (
+                        <AccountCard key={item.id} item={item} />
+                    ))}
+                </>
+            ) : (
+                /* --- Empty State UI --- */
+                <div className="col-span-full py-6 md:py-10 flex flex-row items-center justify-center gap-6 md:gap-10 max-w-lg mx-auto bg-orange-50/30 rounded-[2.5rem] px-8 border border-orange-100/50">
+                    <div className="relative flex-shrink-0">
+                        <div className="absolute inset-0 bg-white rounded-3xl rotate-6 shadow-sm" />
+                        <div className="absolute inset-0 border border-orange-200 rounded-3xl -rotate-3" />
+                        <motion.div 
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="relative z-10 w-16 h-16 md:w-20 md:h-20 bg-white rounded-3xl shadow-xl shadow-orange-100/50 flex items-center justify-center text-orange-600 border border-white"
+                        >
+                            <div className="relative">
+                                {React.cloneElement(categories.find(c => c.id === selectedHistory)?.icon || <Package />, { 
+                                    size: 28, 
+                                    strokeWidth: 1.8 
+                                })}
+                                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full" />
+                            </div>
+                        </motion.div>
+                    </div>
 
-    {/* Right Side: Content & Button */}
-    <div className="flex flex-col items-start text-left">
-        <h3 className="text-lg font-black italic text-[#2D1B19] leading-none uppercase tracking-tighter">
-            No <span className="text-orange-600">History</span>
-        </h3>
-        
-        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] mt-2 leading-tight max-w-[180px]">
-            Your {categories.find(c => c.id === selectedHistory)?.label.toLowerCase()} list is currently empty.
-        </p>
+                    <div className="flex flex-col items-start text-left">
+                        <h3 className="text-lg font-black italic text-[#2D1B19] leading-none uppercase tracking-tighter">
+                            No <span className="text-orange-600">History</span>
+                        </h3>
+                        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] mt-2 leading-tight max-w-[180px]">
+                            Your {categories.find(c => c.id === selectedHistory)?.label.toLowerCase()} list is currently empty.
+                        </p>
+                        <motion.button 
+                            whileTap={{ scale: 0.96 }}
+                            onClick={() => {
+                                const paths = {
+                                    orders: ROUTES.USER_STORE,
+                                    rides: ROUTES.USER_VEHICLE,
+                                    hotels: ROUTES.USER_STAY,
+                                    pooja: ROUTES.USER_VISHESH_POOJA
+                                };
+                                window.location.href = paths[selectedHistory] || ROUTES.USER_HOME;
+                            }}
+                            className="mt-4 group flex items-center gap-2 bg-[#2D1B19] pl-4 pr-2 py-1.5 rounded-xl transition-all hover:bg-orange-600 shadow-lg shadow-orange-900/10"
+                        >
+                            <span className="text-white text-[8px] font-black uppercase tracking-widest">Explore</span>
+                            <div className="w-5 h-5 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <ChevronRight size={12} className="text-white" />
+                            </div>
+                        </motion.button>
+                    </div>
+                </div>
+            )}
+        </div>
 
-        {/* Action Button - Compact Row Style */}
-        <motion.button 
-            whileTap={{ scale: 0.96 }}
-            onClick={() => {
-                const paths = {
-                    orders: ROUTES.USER_STORE,
-                    rides: ROUTES.USER_VEHICLE,
-                    hotels: ROUTES.USER_STAY,
-                    pooja: ROUTES.USER_VISHESH_POOJA
-                };
-                window.location.href = paths[selectedHistory] || ROUTES.USER_HOME;
-            }}
-            className="mt-4 group flex items-center gap-2 bg-[#2D1B19] pl-4 pr-2 py-1.5 rounded-xl transition-all hover:bg-orange-600 shadow-lg shadow-orange-900/10"
-        >
-            <span className="text-white text-[8px] font-black uppercase tracking-widest">
-                Explore
-            </span>
-            <div className="w-5 h-5 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                <ChevronRight size={12} className="text-white" />
-            </div>
-        </motion.button>
-    </div>
-</div>
-                )}
-            </motion.div>
-        )}
+        {/* 2. Recommendation Row (Always Visible as long as selectedHistory exists) */}
+        <div className="mt-6 border-t border-orange-100 pt-8">
+            <RecommendationRow type={selectedHistory} />
+        </div>
+    </motion.div>
+)}
 
         {/* Initial History State (Nothing selected) */}
         {activeTab === 'history' && !selectedHistory && (
