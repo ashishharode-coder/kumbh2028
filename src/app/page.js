@@ -1,7 +1,6 @@
 "use client";
 
-import HomePage from "@/components/home/HomePage";
-import KumbhCounter from "@/components/KumbhCounter/KumbhCounter";
+import HomePage from "@/app/user/home/HomePage";
 
 export default function Page() {
   return <HomePage />;

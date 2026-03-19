@@ -42,7 +42,7 @@
 }
 
 @utility nav-link-inactive {
-  color: rgb(124 45 18 / 0.7); /* orange-900/70 */
+  color: rgb(124 45 18 / 0.7);
   &:hover {
     color: #ea580c;
   }
