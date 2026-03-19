@@ -5,39 +5,36 @@ import {
     User, Package, Car, Hotel, Flame, LogOut, 
     ChevronRight, MapPin, CheckCircle2, 
     Calendar, ShoppingBag, Edit2, Camera,
-    ChevronDown, History ,X
+    ChevronDown, History ,X,Clock,      
+  CheckCircle,
+  LayoutGrid
 } from 'lucide-react';
+import { CiGrid41 } from 'react-icons/ci';
+import { ROUTES } from "@/app/constant/routes";
 
-const Account = () => {
-    const [activeTab, setActiveTab] = useState('profile');
-    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-    
-    // --- History Selection State ---
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedHistory, setSelectedHistory] = useState(null); 
 
-    const [userName, setUserName] = useState('Rahul Sharma');
-    const [userEmail, setUserEmail] = useState('rahul@mahakal.com');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalConfig, setModalConfig] = useState({ field: '', label: '', value: '' });
-
-    const [profileImg, setProfileImg] = useState(null); 
-    const fileInputRef = useRef(null);
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => setProfileImg(reader.result);
-            reader.readAsDataURL(file);
+const postsData = {
+    pending: [
+        { 
+            id: 'PS01',
+            title: 'Mahakal Temple Darshan Guide',
+            status: 'Pending',
+            date: '18 March 2026',
+            img: 'https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?w=400',
+            desc: 'Guide for first time visitors'
+        },
+        { 
+            id: 'PS02',
+            title: 'Best Prasad Shops Near Temple',
+            status: 'Pending',
+            date: '19 March 2026',
+            img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400',
+            desc: 'Local shops for Mahakal prasad'
         }
-    };
+    ],
 
-    const finalSignOut = () => {
-        localStorage.clear();
-        window.location.href = "/"; 
-    };
-    
+    approved: []
+};
 
     const historyData = {
         orders: [
@@ -58,6 +55,40 @@ const Account = () => {
         { id: 'pooja', label: 'Pooja Slots', icon: <Flame size={14} /> },
     ];
 
+
+const Account = () => {
+    const [activeTab, setActiveTab] = useState('profile');
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+    // posts ke liye state
+    const [isPostDropdownOpen, setIsPostDropdownOpen] = useState(false); 
+    const [postStatus, setPostStatus] = useState(null);
+    
+    // --- History Selection State ---
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedHistory, setSelectedHistory] = useState(null); 
+
+    const [userName, setUserName] = useState('Guest User');
+    const [userEmail, setUserEmail] = useState('Guest@email.com');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalConfig, setModalConfig] = useState({ field: '', label: '', value: '' });
+
+    const [profileImg, setProfileImg] = useState(null); 
+    const fileInputRef = useRef(null);
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setProfileImg(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const finalSignOut = () => {
+        localStorage.clear();
+        window.location.href = ROUTES.USER_HOME; 
+    };
     return (
         <div className="min-h-screen bg-[#FFFDF9] text-[#2D1B19] font-sans pb-5 pt-24">
             
@@ -87,62 +118,119 @@ const Account = () => {
             </div>
 
             {/* --- Navigation --- */}
-            <div className="sticky top-[70px] z-40 bg-white/80 backdrop-blur-md border-b border-orange-100 py-4 mb-8">
-                <div className="max-w-7xl mx-auto px-4 flex justify-center gap-3">
-                    
-                    <button 
-                        onClick={() => {
-                            setActiveTab('profile');
-                            setSelectedHistory(null); 
-                            setIsDropdownOpen(false);
-                        }}
-                        className={`flex items-center gap-2 px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'profile' ? 'bg-orange-600 text-white shadow-lg' : 'bg-orange-50 text-orange-900/40'}`}
-                    >
-                        <User size={16} /> My Profile
-                    </button>
+<div className="sticky top-[70px] z-40 bg-white/90 backdrop-blur-md border-b border-orange-100 py-3 mb-6">
+    <div className="max-w-7xl mx-auto px-2 md:px-4 flex justify-center gap-1.5 md:gap-3">
+        
+        {/* --- Profile Button --- */}
+        <button 
+            onClick={() => {
+                setActiveTab('profile');
+                setSelectedHistory(null); 
+                setPostStatus(null);
+                setIsDropdownOpen(false);
+                setIsPostDropdownOpen(false);
+            }}
+            className={`flex items-center gap-1.5 px-3 md:px-6 py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-tight md:tracking-widest transition-all ${activeTab === 'profile' ? 'bg-orange-600 text-white shadow-md' : 'bg-orange-50 text-orange-900/40'}`}
+        >
+            <User size={14} className="md:size-4" /> <span className="hidden xs:inline">Profile</span> Profile
+        </button>
 
-                    <div className="relative">
-                        <button 
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className={`flex items-center gap-2 px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'history' ? 'bg-orange-600 text-white shadow-lg' : 'bg-orange-50 text-orange-900/40'}`}
+        {/* --- Booking History Dropdown --- */}
+        <div className="relative">
+            <button 
+                onClick={() => {
+                    setIsDropdownOpen(!isDropdownOpen);
+                    setIsPostDropdownOpen(false);
+                }}
+                className={`flex items-center gap-1.5 px-3 md:px-6 py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-tight md:tracking-widest transition-all ${activeTab === 'history' ? 'bg-orange-600 text-white shadow-md' : 'bg-orange-50 text-orange-900/40'}`}
+            >
+                <History size={14} className="md:size-4" /> <span className="hidden xs:inline">Bookings</span> Bookings
+                <ChevronDown size={12} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            <AnimatePresence>
+                {isDropdownOpen && (
+                    <>
+                        <div className="fixed inset-0 z-[-1]" onClick={() => setIsDropdownOpen(false)} />
+                        <motion.div 
+                            initial={{ opacity: 0, y: 8, scale: 0.98 }} 
+                            animate={{ opacity: 1, y: 0, scale: 1 }} 
+                            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                            className="absolute top-full right-0 mt-2 w-44 md:w-52 bg-white border border-orange-100 rounded-xl shadow-2xl p-1.5 z-50"
                         >
-                            <History size={16} /> Booking History
-                            <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                        </button>
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => {
+                                        setSelectedHistory(cat.id);
+                                        setActiveTab('history');
+                                        setIsDropdownOpen(false);
+                                        setPostStatus(null);
+                                    }}
+                                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase transition-colors ${selectedHistory === cat.id ? 'bg-orange-50 text-orange-600' : 'hover:bg-orange-50 text-gray-400'}`}
+                                >
+                                    {cat.icon} {cat.label}
+                                </button>
+                            ))}
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </div>
 
-                        {/* Dropdown Menu */}
-                        <AnimatePresence>
-                            {isDropdownOpen && (
-                                <>
-                                    {/* Invisible Backplate to close dropdown on click outside */}
-                                    <div className="fixed inset-0 z-[-1]" onClick={() => setIsDropdownOpen(false)} />
-                                    
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 10, scale: 0.95 }} 
-                                        animate={{ opacity: 1, y: 0, scale: 1 }} 
-                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        className="absolute top-full right-0 mt-2 w-52 bg-white border border-orange-100 rounded-2xl shadow-2xl p-2 z-50"
-                                    >
-                                        {categories.map((cat) => (
-                                            <button
-                                                key={cat.id}
-                                                onClick={() => {
-                                                    setSelectedHistory(cat.id);
-                                                    setActiveTab('history');
-                                                    setIsDropdownOpen(false);
-                                                }}
-                                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[10px] font-black uppercase transition-colors ${selectedHistory === cat.id ? 'bg-orange-50 text-orange-600' : 'hover:bg-orange-50 text-gray-400'}`}
-                                            >
-                                                {cat.icon} {cat.label}
-                                            </button>
-                                        ))}
-                                    </motion.div>
-                                </>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </div>
-            </div>
+        {/* --- My Posts Dropdown --- */}
+        <div className="relative">
+            <button 
+                onClick={() => {
+                    setIsPostDropdownOpen(!isPostDropdownOpen);
+                    setIsDropdownOpen(false);
+                }}
+                className={`flex items-center gap-1.5 px-3 md:px-6 py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-tight md:tracking-widest transition-all ${activeTab === 'my-posts' ? 'bg-orange-600 text-white shadow-md' : 'bg-orange-50 text-orange-900/40'}`}
+            >
+                <CiGrid41 size={14} className="md:size-4" /> <span className="hidden xs:inline">Posts</span> Posts
+                <ChevronDown size={12} className={`transition-transform duration-300 ${isPostDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            <AnimatePresence>
+                {isPostDropdownOpen && (
+                    <>
+                        <div className="fixed inset-0 z-[-1]" onClick={() => setIsPostDropdownOpen(false)} />
+                        <motion.div 
+                            initial={{ opacity: 0, y: 8, scale: 0.98 }} 
+                            animate={{ opacity: 1, y: 0, scale: 1 }} 
+                            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                            className="absolute top-full left-0 mt-2 w-44 md:w-52 bg-white border border-orange-100 rounded-xl shadow-2xl p-1.5 z-50"
+                        >
+                            <button
+                                onClick={() => {
+                                    setPostStatus('pending');
+                                    setActiveTab('my-posts');
+                                    setIsPostDropdownOpen(false);
+                                    setSelectedHistory(null);
+                                }}
+                                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase transition-colors ${postStatus === 'pending' ? 'bg-orange-50 text-orange-600' : 'hover:bg-orange-50 text-gray-400'}`}
+                            >
+                                <Clock size={14} className="text-amber-500" /> Pending
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setPostStatus('approved');
+                                    setActiveTab('my-posts');
+                                    setIsPostDropdownOpen(false);
+                                    setSelectedHistory(null);
+                                }}
+                                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[9px] md:text-[10px] font-black uppercase transition-colors ${postStatus === 'approved' ? 'bg-orange-50 text-orange-600' : 'hover:bg-orange-50 text-gray-400'}`}
+                            >
+                                <CheckCircle size={14} className="text-green-500" /> Approved
+                            </button>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </div>
+
+    </div>
+</div>
 
            {/* --- Main Content --- */}
 <main className="max-w-4xl mx-auto px-4">
@@ -212,12 +300,12 @@ const Account = () => {
             whileTap={{ scale: 0.96 }}
             onClick={() => {
                 const paths = {
-                    orders: '/user/store',
-                    rides: '/user/vehicle',
-                    hotels: '/user/stay',
-                    pooja: '/user/vishesh-pooja'
+                    orders: ROUTES.USER_STORE,
+                    rides: ROUTES.USER_VEHICLE,
+                    hotels: ROUTES.USER_STAY,
+                    pooja: ROUTES.USER_VISHESH_POOJA
                 };
-                window.location.href = paths[selectedHistory] || '/';
+                window.location.href = paths[selectedHistory] || ROUTES.USER_HOME;
             }}
             className="mt-4 group flex items-center gap-2 bg-[#2D1B19] pl-4 pr-2 py-1.5 rounded-xl transition-all hover:bg-orange-600 shadow-lg shadow-orange-900/10"
         >
@@ -245,6 +333,69 @@ const Account = () => {
                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mt-2">Please select a category to view details</p>
             </motion.div>
         )}
+
+        {activeTab === 'my-posts' && postStatus && (
+    <motion.div 
+        key={postStatus}
+        initial={{ opacity: 0, y: 10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        exit={{ opacity: 0 }} 
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+    >
+
+        {postsData[postStatus] && postsData[postStatus].length > 0 ? (
+            <>
+                <div className="col-span-full mb-2 flex items-center justify-between">
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-600 flex items-center gap-2">
+                        <LayoutGrid size={12}/> 
+                        {postStatus === 'pending' ? 'Pending Posts' : 'Approved Posts'}
+                    </h2>
+                </div>
+
+                {postsData[postStatus].map((item) => (
+                    <AccountCard key={item.id} item={item} />
+                ))}
+            </>
+        ) : (
+           
+<div className="col-span-full py-6 md:py-10 flex flex-row items-center justify-center gap-6 md:gap-10 max-w-lg mx-auto bg-orange-50/30 rounded-[2.5rem] px-8 border border-orange-100/50">
+    
+    {/* Left Side: Icon Container */}
+    <div className="relative flex-shrink-0">
+        {/* Decorative Background for Icon */}
+        <div className="absolute inset-0 bg-white rounded-3xl rotate-6 shadow-sm" />
+        <div className="absolute inset-0 border border-orange-200 rounded-3xl -rotate-3" />
+        
+        <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="relative z-10 w-16 h-16 md:w-20 md:h-20 bg-white rounded-3xl shadow-xl shadow-orange-100/50 flex items-center justify-center text-orange-600 border border-white"
+        >
+            <div className="relative">
+                {postStatus === 'pending' ? <Clock size={28} strokeWidth={1.8} /> : <CiGrid41 size={28} strokeWidth={1.8} />}
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-orange-400 border-2 border-white rounded-full" />
+            </div>
+        </motion.div>
+    </div>
+
+    {/* Right Side: Content & Button */}
+    <div className="flex flex-col items-start text-left">
+        <h3 className="text-lg font-black italic text-[#2D1B19] leading-none uppercase tracking-tighter">
+            No <span className="text-orange-600">{postStatus}</span> Posts
+        </h3>
+        
+        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] mt-2 leading-tight max-w-[180px]">
+           You don't have any {postStatus} posts yet. Start sharing your journey with others!
+        </p>
+
+       
+    </div>
+</div>
+        )}
+
+    </motion.div>
+)}
+
     </AnimatePresence>
 </main>
 
