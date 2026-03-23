@@ -17,9 +17,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // routes
-router.post("/heros", upload.single("image"), herosController.createHeros);
-router.get("/heros", herosController.getAllHeros);
-router.get("/heros/:id", herosController.getSingleHeros);
-router.put("/heros/:id", upload.single("image"), herosController.updateHeros);
+router.post("/", upload.single("image"), herosController.createHeros);
+router.get("/", herosController.getAllHeros);
+router.get("/:id", herosController.getSingleHeros);
+router.put("/:id", upload.single("image"), herosController.updateHeros);
+router.delete("/:id",herosController.deleteHeros);
 
 export default router;

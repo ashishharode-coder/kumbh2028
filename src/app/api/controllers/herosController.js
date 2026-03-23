@@ -125,43 +125,7 @@ const getSingleHeros = async (req, res) => {
 // };
 
 //Updated DATA 
-// export const updateHeros = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         console.log("BODY:", req.body);
-//         console.log("FILE:", req.file);
-
-//         let updateData = {};
-
-//         if (req.body.title !== undefined) updateData.title = req.body.title;
-//         if (req.body.subtitle !== undefined) updateData.subtitle = req.body.subtitle;
-//         if (req.body.description !== undefined) updateData.description = req.body.description;
-
-//         if (req.file) {
-//             updateData.image = req.file.filename;
-//         }
-
-//         console.log("UPDATE DATA:", updateData);
-
-//         const updated = await Heros.findByIdAndUpdate(
-//             id,
-//             { $set: updateData },
-//             { returnDocument: "after" }
-//         );
-
-//         res.json({
-//             success: true,
-//             message: "Heros Updated ✅",
-//             data: updated
-//         });
-
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
-export const updateHeros = async (req, res) => {
+const updateHeros = async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -193,9 +157,38 @@ export const updateHeros = async (req, res) => {
     }
 };
 
+// DELETE
+const deleteHeros = async (req, res) => {
+    try {
+
+        const id = req.params.id;
+
+        const deleted = await Heros.findByIdAndDelete(id);
+
+        // check if data exists
+        if (!deleted) {
+            return res.status(404).json({
+                message: "Heros not found"
+            });
+        }
+
+        res.json({
+            message: "Heros Deleted Successfully ✅",
+            data: deleted
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 export default {
     createHeros,
     getAllHeros,
     getSingleHeros,
-    updateHeros
+    updateHeros,
+    deleteHeros
 };
