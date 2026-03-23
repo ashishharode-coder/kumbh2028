@@ -25,6 +25,10 @@ app.use("/api/auth", authRoutes);
 import userRoutes from "./routes/userRoutes.js";
 app.use("/api/users", userRoutes);
 
+//user post routes
+import postRoutes from "./routes/userPostRoutes.js";
+app.use("/api/posts", postRoutes);
+
 app.listen(process.env.PORT, () => {
   console.log("Server started on port " + process.env.PORT);
 });
